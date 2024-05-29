@@ -1,5 +1,6 @@
-# Xbox360_CPU-KEY
-  A Java CPU-KEY generator for Xbox 360 with and without salt
+# CPU-KEY generator for Xbox 360 
+  A Java CPU-KEY generator for Xbox 360 with and without salt.
+  <p>These keys have not been tested yet, if you find any useful, please let me know to generate a general list of keys with which to create inferences</p>
 
 # HOW-TO
 * create a new java project for Ants in Netbeans or another Java IDE
