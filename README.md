@@ -1,2 +1,2 @@
 # Xbox360_CPU-KEY
-An Xbox 360 CPU-KEY generator with and without salt
+A Java CPU-KEY generator for Xbox 360 with and without salt
