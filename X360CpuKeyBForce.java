@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
 package x360cpukeybforce;
 
 import java.io.BufferedReader;
@@ -140,9 +136,60 @@ public class X360CpuKeyBForce {
         }
         return salts;
     }
+     //Brute Force mode
+    /**
+         * Demostración de ataque por fuerza bruta a AES ECB (versión
+         * simplificada)
+         *
+         * @param textoCifrado
+         * @param textoPlanoConocido
+         * @param claveInicial Suposición inicial cercana a la real para
+         * demostración
+         */
+        // Debería recibir el texto plano esperado como parámetro
+        public static void fuerzaBrutaAES_ECB(byte[] textoCifrado, byte[] textoPlanoConocido, byte[] claveInicial) {
+            // Implementación didáctica con clave de ejemplo cercana
+            byte[] clavePrueba = Arrays.copyOf(claveInicial, claveInicial.length);
+            //clavePrueba[clavePrueba.length - 1] = (byte) (clavePrueba[clavePrueba.length - 1] - 10);
+            // Simulación de intento de adivinanza incrementando valores
+            for (int i = 0; i < Long.MAX_VALUE; i++) { // Límite para demostración
+                System.out.println("Intento: " + (i + 1) + " de clave: " + Utils.bytesToHex(clavePrueba));
+                try {
+                    SecretKeySpec clave = new SecretKeySpec(clavePrueba, "AES");
+                    Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+                    cipher.init(Cipher.DECRYPT_MODE, clave);
+                    byte[] descifrado = cipher.doFinal(textoCifrado);
 
+                    if (Arrays.equals(descifrado, textoPlanoConocido)) {
+                        System.out.println("¡Clave encontrada!\n\t" + Utils.bytesToHex(clavePrueba) + "\n");
+                        System.out.println("Texto descifrado: " + new String(descifrado));
+                        return;
+                    }
+                } catch (Exception e) {
+                    /* Ignorar errores */ }
+
+                // Incremento secuencial
+                if (!Utils.incrementKey(clavePrueba)) {
+                    // Si ya se recorrieron todas las claves, salimos
+                    break;
+                }
+            }
+            System.out.println("Ataque didáctico finalizado sin éxito (esperado)");
+        }
+    
+    public static boolean incrementKey(byte[] key) {
+            for (int i = key.length - 1; i >= 0; i--) {
+                int currentByte = key[i] & 0xFF; // Convertir a entero sin signo
+                if (currentByte != 0xFF) {
+                    key[i] = (byte) (currentByte + 1);
+                    return true;
+                }
+                key[i] = 0;
+            }
+            return false;
+        }
     /* 
-    //Brute Force mode
+   
     private static List<String> generateKeys(int count) {
         List<String> list = new ArrayList<>();
         Random random = new Random();
